@@ -49,9 +49,11 @@ contract DeadManwitch
         updateState();
         require(state == ContractState.Claimable, "Funds not Claimable!");
         require(msg.sender==beneficiary,"You are not the beneficiary!");
-        payable(beneficiary).call{value:totalAmt}("");
+        (bool success, ) = payable(beneficiary).call{value: totalAmt}("");
+        require(success, "Transfer failed");
         state = ContractState.Claimed;
     }
+
 
 
 }
